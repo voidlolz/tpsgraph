@@ -1,0 +1,8 @@
+name: TPSGraph
+version: '${version}'
+authors: [ voidlolz ]
+main: me.voidlolz.tpsgraph.TPSGraph
+api-version: '1.21.11'
+permissions:
+  tpsgraph.use:
+    default: op
