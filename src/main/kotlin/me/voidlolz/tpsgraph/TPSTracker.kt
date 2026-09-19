@@ -10,6 +10,13 @@ import kotlin.math.roundToInt
 class TPSTracker(private val maxSamples: Int) {
     private val history = ArrayDeque<Double>()
 
+    // versions belowe 1.21.9 crash since no player head component
+    private val head: Component? = try {
+        Component.`object`(ObjectContents.playerHead("CONSOLE"))
+    } catch (e: LinkageError) {
+        null
+    }
+
     fun add(tps: Double) {
         if (history.size == maxSamples) {
             history.removeFirst()
@@ -32,8 +39,9 @@ class TPSTracker(private val maxSamples: Int) {
         )
 
         val header = Component.text()
-            .append(Component.`object`(ObjectContents.playerHead("CONSOLE")))
-            .append(Component.space())
+        if (head != null) {
+            header.append(head).append(Component.space())
+        }
 
         averages.forEachIndexed { i, (name, avg) ->
             val value = avg.coerceAtMost(20.0)
